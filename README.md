@@ -4,6 +4,10 @@ Written in bash.
 
 Offers functions to manipulate the display temperature defined by redshift and can be variously applied.
 
+redshift-controller can be in two states:
+*default*: redshift behaves as in the config defined (with transition between day and night mode). Can be reached by calling the *reset()* method.
+*manual*: redshift has a static temperature defined by the redshift-controller (value is stored in a temporary file). Is reached by calling the *setTemp()* method or any which calls this method.
+
 **Functions**
 
 *printTemperature()*: Returns (echo) the temperature with color flag in front and icon
