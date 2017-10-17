@@ -7,9 +7,6 @@ REDSHIFTMIN=1000
 
 STEPDEFAULT=200
 
-# This allows us to change its appearance conditionally
-icon=""
-
 # Sets the global variable currenttemp to the current temperature
 getCurrentTemp(){
   pgrep -x redshift &> /dev/null
@@ -115,6 +112,9 @@ decrease(){
   fi
   setTemp $newtemp
 }
+
+# icon to use in printTemperature function
+icon=""
 
 # Returns (echo) the temperature with icon
 # (depending how it is defined)
