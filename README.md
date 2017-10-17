@@ -9,6 +9,10 @@ Offers functions to manipulate the display temperature defined by redshift and c
 *printTemperature()*: Returns (echo) the temperature with color flag in front and icon
 (depending on how it is defined).
 
+*setTemp()*: Sets temperature to the argument.
+Only checks if an argument is given
+and not if it's in the correct range.
+
 *increase()*: Increases the temperature to the next multiple of the value
 of the first argument (or STEPDEFAULT).
 But stops at the REDSHIFTMAX.
