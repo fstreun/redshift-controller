@@ -1,14 +1,17 @@
 #!/bin/bash
 
+# file path to store current temperature in manual mode
 file="/tmp/redshift-controller"
 
+# max allowed temperature value defined by redshift
 REDSHIFTMAX=25000
+# min allowed temperature value defined by redshift
 REDSHIFTMIN=1000
-
+# default step used by increase and decrease
 STEPDEFAULT=200
 
 # Sets the global variable currenttemp to the current temperature
-getCurrentTemp(){
+getCurrentTemperature(){
   pgrep -x redshift &> /dev/null
   if [[ $? -eq 0 ]]; then
     # redshift is running
@@ -24,9 +27,9 @@ getCurrentTemp(){
 # Sets temperature to the argument.
 # Only checks if an argument is given
 # and not if it's in the correct range
-setTemp(){
+setTemperature(){
   if [[ -z "$1" ]]; then
-    echo "ERROR: setTemp(): need an argument"
+    echo "ERROR: setTemperature(): need an argument"
     exit 1
   else
     temp=$1
@@ -35,7 +38,7 @@ setTemp(){
       # redshift is running
       killall -q redshift
     fi
-    setFileTemp $temp
+    setFileTemperature $temp
     redshift -O $temp
   fi
 }
@@ -51,7 +54,7 @@ reset(){
   echo '' > $file
 }
 
-setFileTemp(){
+setFileTemperature(){
   echo $1 > $file
 }
 
@@ -65,7 +68,7 @@ increase(){
     amount=$1
   fi
 
-  getCurrentTemp
+  getCurrentTemperature
   if ((currenttemp % amount == 0)); then
 
     newtemp=$((currenttemp+amount))
@@ -81,7 +84,7 @@ increase(){
     # reached min
     newtemp=$REDSHIFTMIN
   fi
-  setTemp $newtemp
+  setTemperature $newtemp
 }
 
 # Decreases the temperature to the next multiple of the value
@@ -94,7 +97,7 @@ decrease(){
     amount=$1
   fi
 
-  getCurrentTemp
+  getCurrentTemperature
   if ((currenttemp % amount == 0)); then
 
     newtemp=$((currenttemp-amount))
@@ -110,7 +113,7 @@ decrease(){
     # reached min
     newtemp=$REDSHIFTMAX
   fi
-  setTemp $newtemp
+  setTemperature $newtemp
 }
 
 # icon to use in printTemperature function
@@ -119,7 +122,7 @@ icon=""
 # Returns (echo) the temperature with icon
 # (depending how it is defined)
 printTemperature(){
-  getCurrentTemp
+  getCurrentTemperature
   # define output Format here
   if [[ -z $currenttemp ]]; then
     # no current temperature (probably not running)
@@ -136,6 +139,7 @@ printTemperature(){
     echo "%{F#FF9B1E}$icon ${currenttemp}K"
   fi
 }
+
 
 # Check if the function exists (bash specific)
 if declare -f "$1" > /dev/null
