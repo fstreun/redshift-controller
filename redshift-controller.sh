@@ -1,7 +1,17 @@
 #!/bin/bash
 
+
+# States:
+# Default: redshift is running (has pid) and behaves as in the config file defined.
+# Manual: redshift is not running. Current values are stored in the tmp file.
+# Disabled: redshift is not running. tmp file is empty or does not exist.
+
+
 # file path to store current temperature in manual mode
 file="/tmp/redshift-controller"
+
+FLAGDISABLED="disabled"
+
 
 # max allowed temperature value defined by redshift
 REDSHIFTMAX=25000
@@ -38,14 +48,14 @@ setTemperature(){
       # redshift is running
       killall -q redshift
     fi
-    setFileTemperature $temp
+    setFileContent $temp
     redshift -O $temp
   fi
 }
 
-# Resets redshift to the default configurations.
+# Restarts redshift to the default configurations.
 # (probably defined in the config file)
-reset(){
+restart(){
   pgrep -x redshift &> /dev/null
   if [[ $? -ne 0 ]]; then
     redshift -x
@@ -54,7 +64,20 @@ reset(){
   echo '' > $file
 }
 
-setFileTemperature(){
+# Disables are effects redshift has on the display
+disable(){
+    pgrep -x redshift &> /dev/null
+    if [[ $? -eq 0 ]]; then
+      # redshift is running
+      killall -q redshift
+    else
+      # redshift is not running
+      redshift -x
+    fi
+    echo '' > $file
+}
+
+setFileContent(){
   echo $1 > $file
 }
 
@@ -125,7 +148,7 @@ printTemperature(){
   getCurrentTemperature
   # define output Format here
   if [[ -z $currenttemp ]]; then
-    # no current temperature (probably not running)
+    # no current temperature (probably in state disabled)
     # Grey
     echo "%{F#474C55}$icon"
   elif [[ $temp -ge 5000 ]]; then
