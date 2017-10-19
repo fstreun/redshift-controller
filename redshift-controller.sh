@@ -151,10 +151,10 @@ printTemperature(){
     # no current temperature (probably in state disabled)
     # Grey
     echo "%{F#474C55}$icon"
-  elif [[ $temp -ge 5000 ]]; then
+  elif [[ $currenttemp -ge 5000 ]]; then
     # Blue
     echo "%{F#73CEFF}$icon ${currenttemp}K"
-  elif [[ $temp -ge 4000 ]]; then
+  elif [[ $currenttemp -ge 4000 ]]; then
     # Yellow
     echo "%{F#FFF365}$icon ${currenttemp}K"
   else
@@ -178,3 +178,4 @@ else
   echo "usage only with function name" >&2
   exit 1
 fi
+temp
