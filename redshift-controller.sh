@@ -178,4 +178,3 @@ else
   echo "usage only with function name" >&2
   exit 1
 fi
-temp
