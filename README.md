@@ -41,7 +41,7 @@ type = custom/script
 exec = ~/.config/polybar/redshift-controller.sh printTemperature
 interval = 1
 
-click-left = ~/.config/polybar/redshift-controller.sh reset
+click-left = ~/.config/polybar/redshift-controller.sh restart
 click-left = ~/.config/polybar/redshift-controller.sh disable
 scroll-up =  ~/.config/polybar/redshift-controller.sh increase 200
 scroll-down =  ~/.config/polybar/redshift-controller.sh decrease 200

@@ -84,7 +84,7 @@ setFileContent(){
 # Increases the temperature to the next multiple of the value
 # of the first argument (or STEPDEFAULT).
 # But stops at the REDSHIFTMAX
-increase(){
+increaseTemperature(){
   if [[ -z "$1" ]]; then
     amount=$STEPDEFAULT
   else
@@ -113,7 +113,7 @@ increase(){
 # Decreases the temperature to the next multiple of the value
 # of the first argument (or STEPDEFAULT).
 # But stops at the REDSHIFTMIN
-decrease(){
+decreaseTemperature(){
   if [[ -z "$1" ]]; then
     amount=$STEPDEFAULT
   else
